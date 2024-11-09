@@ -19,9 +19,9 @@ spring:
 
   kafka:
     bootstrap-servers:
-      - b-2-public.test.lh49b7.c4.kafka.ap-northeast-2.amazonaws.com:9196
-      - b-1-public.test.lh49b7.c4.kafka.ap-northeast-2.amazonaws.com:9196
-      - b-3-public.test.lh49b7.c4.kafka.ap-northeast-2.amazonaws.com:9196
+      - b-2-public.test.lh49b7.c4.kafka.ap-northeast-2.amazonaws.com:9198
+      - b-1-public.test.lh49b7.c4.kafka.ap-northeast-2.amazonaws.com:9198
+      - b-3-public.test.lh49b7.c4.kafka.ap-northeast-2.amazonaws.com:9198
     consumer:
       group-id: consumer-group
       auto-offset-reset: "earliest"
@@ -41,9 +41,11 @@ spring:
         request.timeout.ms: 50000  # 요청 타임아웃 늘리기
     properties:
       ssl.endpoint.identification.algorithm: ""
-      security.protocol: SASL_SSL
-      sasl.mechanism: SCRAM-SHA-512
-      sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="elliot" password="admin123!";
+      security.protocol: "SASL_SSL"
+      sasl.mechanism: "AWS_MSK_IAM"
+      sasl.jaas.config: "software.amazon.msk.auth.iam.IAMLoginModule required;"
+      sasl.client.callback.handler.class: "software.amazon.msk.auth.iam.IAMClientCallbackHandler"
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -51,7 +53,3 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
-logging:
-  level:
-    org.apache.kafka: DEBUG

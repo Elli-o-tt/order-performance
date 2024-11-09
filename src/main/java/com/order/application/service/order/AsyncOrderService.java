@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class AsyncOrderService {
     private static final DateTimeFormatter formatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
+    @Transactional
     public OrderResult order(OrderCommand orderCommand) {
         orderCommand.validate();
         log.info("====================================================");
@@ -32,7 +34,7 @@ public class AsyncOrderService {
         Long memberId = orderCommand.memberId();
         Product product =
                 productRepository
-                        .findById(orderCommand.productId())
+                        .findByIdForUpdate(orderCommand.productId())
                         .orElseThrow(() -> new RuntimeException("유효하지 않은 상품"));
 
         log.info(String.valueOf(product.getStockCount()));
