@@ -4,7 +4,7 @@ GET https://examples.http-client.intellij.net/get
 
 ###
 
-POST localhost:8080/order1
+POST localhost:8080/asyncOrder
 Content-Type: application/json
 
 {

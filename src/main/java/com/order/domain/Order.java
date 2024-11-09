@@ -50,6 +50,15 @@ public class Order {
         this.status = "COMPLETED";
     }
 
+    public static Order orderAutoCompleted(Product product, Long memberId) {
+        return Order.builder()
+                .memberId(memberId)
+                .productId(product.getId())
+                .amount(product.getPrice())
+                .status("COMPLETED")
+                .build();
+    }
+
     public void paymentFailed() {
         this.status = "PAYMENT_FAILED";
     }

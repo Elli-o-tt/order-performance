@@ -58,7 +58,7 @@ public class SyncOrderService {
         product.sold();
         productRepository.save(product);
 
-        Order order = Order.orderAccepted(product, memberId);
+        Order order = Order.orderAutoCompleted(product, memberId);
         Order savedOrder = orderRepository.save(order);
         log.info("End:" + LocalDateTime.now().format(formatter));
         log.info("====================================================");
