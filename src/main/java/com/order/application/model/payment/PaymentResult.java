@@ -3,7 +3,7 @@ package com.order.application.model.payment;
 import lombok.Builder;
 
 @Builder
-public record PaymentResult(boolean isSuccess) {
+public record PaymentResult(Boolean isSuccess) {
 
     public static PaymentResult success() {
         return PaymentResult.builder().isSuccess(true).build();

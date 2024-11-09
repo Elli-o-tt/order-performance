@@ -1,18 +1,13 @@
 package com.order.application.model.payment;
 
-import com.order.domain.Product;
 import lombok.Builder;
 
 @Builder
-public record PaymentCommand(Integer price, Long memberId, Object paymentInfo) {
+public record PaymentCommand(Integer price, Long memberId) {
 
     public void validate() {}
 
-    public static PaymentCommand of(Product product, Long memberId, Object paymentInfo) {
-        return PaymentCommand.builder()
-                .price(product.getPrice())
-                .memberId(memberId)
-                .paymentInfo(paymentInfo)
-                .build();
+    public static PaymentCommand of(Integer price, Long memberId) {
+        return PaymentCommand.builder().price(price).memberId(memberId).build();
     }
 }

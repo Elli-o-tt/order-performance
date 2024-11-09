@@ -1,7 +1,8 @@
 package com.order.presentation.controller.order;
 
 import com.order.application.model.order.OrderResult;
-import com.order.application.service.order.StockCountInDBOrderService;
+import com.order.application.service.order.AsyncOrderService;
+import com.order.application.service.order.SyncOrderService;
 import com.order.presentation.model.order.OrderRequest;
 import com.order.presentation.model.order.OrderResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +14,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OrderApi {
 
-    private final StockCountInDBOrderService stockCountInDBOrderService;
+    private final SyncOrderService syncOrderService;
+    private final AsyncOrderService asyncOrderService;
 
-    @PostMapping("/order")
-    public OrderResponse order(@RequestBody OrderRequest orderRequest) {
+    @PostMapping("/syncOrder")
+    public OrderResponse syncOrder(@RequestBody OrderRequest orderRequest) {
 
-        OrderResult result = stockCountInDBOrderService.order(orderRequest.toCommand());
-//        OrderResult result = orderService.selectForUpdateOrder(orderRequest.toCommand());
-//        OrderResult result = orderService.selectForUpdateOrder(orderRequest.toCommand());
-        return OrderResponse.from(result);
+        OrderResponse response;
+        try {
+            OrderResult result = syncOrderService.order(orderRequest.toCommand());
+            response = OrderResponse.success(result);
+        } catch (RuntimeException e) {
+            response = OrderResponse.failed(e.getMessage());
+        }
+        return response;
+    }
+
+    @PostMapping("/asyncOrder")
+    public OrderResponse asyncOrder(@RequestBody OrderRequest orderRequest) {
+
+        OrderResponse response;
+        try {
+            OrderResult result = asyncOrderService.order(orderRequest.toCommand());
+            response = OrderResponse.success(result);
+        } catch (RuntimeException e) {
+            response = OrderResponse.failed(e.getMessage());
+        }
+        return response;
     }
 }

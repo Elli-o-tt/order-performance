@@ -4,11 +4,21 @@ GET https://examples.http-client.intellij.net/get
 
 ###
 
-POST localhost:8080/order
+POST localhost:8080/order1
 Content-Type: application/json
 
 {
   "productId": 1,
   "memberId": 1,
   "paymentMethod": "CREDIT"
+}
+
+###
+
+POST localhost:8080/stock
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 10000
 }

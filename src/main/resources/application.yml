@@ -17,11 +17,41 @@ spring:
       host: localhost
       port: 6379
 
+  kafka:
+    bootstrap-servers:
+      - b-2-public.test.lh49b7.c4.kafka.ap-northeast-2.amazonaws.com:9196
+      - b-1-public.test.lh49b7.c4.kafka.ap-northeast-2.amazonaws.com:9196
+      - b-3-public.test.lh49b7.c4.kafka.ap-northeast-2.amazonaws.com:9196
+    consumer:
+      group-id: consumer-group
+      auto-offset-reset: "earliest"
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        session.timeout.ms: 60000  # 세션 타임아웃을 기본보다 길게 설정
+        heartbeat.interval.ms: 20000  # 하트비트 간격을 늘림
+        connection.timeout.ms: 30000  # 30초로 설정 (기본값보다 길게 설정)
+        request.timeout.ms: 40000     # 요청 시간 타임아웃 (기본값보다 길게 설정)
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        reconnect.backoff.max.ms: 5000  # 재연결 간격 설정
+        reconnect.backoff.ms: 1000
+        request.timeout.ms: 50000  # 요청 타임아웃 늘리기
+    properties:
+      ssl.endpoint.identification.algorithm: ""
+      security.protocol: SASL_SSL
+      sasl.mechanism: SCRAM-SHA-512
+      sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="elliot" password="admin123!";
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
         format_sql: true
 
+logging:
+  level:
+    org.apache.kafka: DEBUG

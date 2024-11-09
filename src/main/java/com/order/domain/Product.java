@@ -36,4 +36,10 @@ public class Product {
             stockCount -= 1;
         }
     }
+
+    public void sellingCancelled() {
+        if (stockCount != null) {
+            stockCount += 1;
+        }
+    }
 }

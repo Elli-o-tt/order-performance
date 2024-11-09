@@ -31,14 +31,26 @@ public class Order {
     @Column(name = "PRODUCT_ID", nullable = false)
     private Long productId;
 
+    @Column(name = "STATUS", nullable = false)
+    private String status;
+
     @Column(name = "AMOUNT", nullable = false)
     private Integer amount;
 
-    public static Order of(Product product, Long memberId) {
+    public static Order orderAccepted(Product product, Long memberId) {
         return Order.builder()
                 .memberId(memberId)
                 .productId(product.getId())
                 .amount(product.getPrice())
+                .status("ACCEPTED")
                 .build();
+    }
+
+    public void orderCompleted() {
+        this.status = "COMPLETED";
+    }
+
+    public void paymentFailed() {
+        this.status = "PAYMENT_FAILED";
     }
 }
